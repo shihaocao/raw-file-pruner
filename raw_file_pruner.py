@@ -42,7 +42,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def find_all_files_with_endings(target_directory: str, endings: List[str]) -> None:
-    '''Find all heic files in the current directory, regardless of capitalization'''
+    '''Find all files with that ending in the current directory, regardless of capitalization'''
     all_files = os.listdir(target_directory)
     files_with_endings = [x for x in all_files if any(x.lower().endswith(ending) for ending in endings)]
     
