@@ -25,7 +25,10 @@ class FileHandle:
 
     def __eq__(self, other):
         if isinstance(other, FileHandle):
-            return self.base_name == other.base_name
+            exact = self.base_name.lower() == other.base_name.lower()
+            inside = self.base_name.lower() in other.base_name.lower()
+            inside_other = other.base_name.lower() in self.base_name.lower()
+            return exact or inside or inside_other
         return False
     
     def __hash__(self):
@@ -82,17 +85,19 @@ def find_and_prune(target: dir, recursive: bool = False, delete: bool = False) -
         print("Searching for files in:", dir)
 
         all_jpgs_in_dir = find_all_files_with_endings(dir, JPG_ENDINGS)
-        print("Found", len(all_jpgs_in_dir), "jpgs")
         
         all_raws_in_dir = find_all_files_with_endings(dir, RAW_ENDINGS)
-        print("Found", len(all_raws_in_dir), "raws")
 
         files_to_delete = [raw for raw in all_raws_in_dir if raw not in all_jpgs_in_dir]
-        print("Found", len(files_to_delete), "files to delete")
+        
+        if files_to_delete:
+            print("Found", len(all_jpgs_in_dir), "jpgs")
+            print("Found", len(all_raws_in_dir), "raws")
+            print("Found", len(files_to_delete), "files to delete")
 
         if delete:
             for raw in files_to_delete:
-                delete_file(raw.full_name)
+                delete_file(dir + "/" + raw.full_name)
                 num_deleted += 1
                 total_files_size += raw.file_size
 
@@ -100,8 +105,6 @@ def find_and_prune(target: dir, recursive: bool = False, delete: bool = False) -
             for raw in files_to_delete:
                 print(f"Found: {raw.full_name} to delete")
                 total_files_size += raw.file_size
-
-    print(f"Deleted from: {target_directories}.")
     
     return num_deleted, total_files_size
 
