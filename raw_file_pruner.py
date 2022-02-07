@@ -8,10 +8,6 @@ import time
 import re
 
 
-# CMD = "heif-convert"
-# QUALITY = "-q"
-# QUALITY_ARG = "99"
-# AUX_FILE_SUFFIX = "-urn:com:apple:photo:2020:aux:hdrgainmap"
 JPG_ENDINGS = [".jpg", ".jpeg"]
 RAW_ENDINGS = [".nef", ".raw"]
 
